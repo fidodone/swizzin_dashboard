@@ -35,7 +35,7 @@ http.send("");
     if (http.status == 200) {
             document.location = url;
     } else {
-    alert("Incorrect username and/or password!");
+    alert("Usuário e/ou Senha incorreta!");
 }
 return false;
 }
