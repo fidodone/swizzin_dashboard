@@ -1,14 +1,14 @@
 <div class="card border-dark mt-3">
-    <div class="card-header">Network Info</div>
+    <div class="card-header">Informações de Rede</div>
     <div class="card-body">
       {% if config.SHAREDSERVER == True %}
         <div class="row">
             <div class="col">
-              <h5 class="text-center">Used</h5>
+              <h5 class="text-center">Usado</h5>
               <p class="text-center"><span id="netused"></span></p>
             </div>
             <div class="col">
-              <h5 class="text-center">Free</h5>
+              <h5 class="text-center">Disponível</h5>
               <p class="text-center"><span id="netfree"></span></p>
             </div>
             <div class="col">
@@ -19,7 +19,7 @@
         <div class="progress">
           <div id="netprogress" class="progress-bar bg-warning" role="progressbar" style="" aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
-        <p class="text-center">You have used <span id="netpercent"></span>% of your bandwidth</p>
+        <p class="text-center">Você usou <span id="netpercent"></span>% da sua banda</p>
       {% endif %}
 
 {% if config.ADMIN_USER == user %}
