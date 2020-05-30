@@ -150,6 +150,12 @@ class quassel_meta:
     pretty_name = "Quassel-Core"
     systemd = "quasselcore"
 
+class qbittorrent_meta:
+    name = "qbittorrent"
+    pretty_name = "qBittorrent"
+    baseurl = "/qbittorrent"
+    multiuser = True
+
 class radarr_meta:
     name = "radarr"
     pretty_name = "Radarr"
