@@ -104,7 +104,7 @@ class medusa_meta:
 class monitor_meta:
     name = "monitor"
     pretty_name = "Monitor de Upload"
-    systemd = False
+    systemd = "monitor@"
     baseurl = "/monitor"    
 
 class netdata_meta:
