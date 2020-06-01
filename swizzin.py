@@ -310,7 +310,7 @@ def network_quota(user):
 
 @app.route('/login')
 def login():
-    return flask.render_template('login.html', title='swizzin login')
+    return flask.render_template('login.html', title='NixonCloud Login')
 
 @app.route('/login/auth')
 @htpasswd.required
