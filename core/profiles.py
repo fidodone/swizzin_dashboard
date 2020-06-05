@@ -218,6 +218,13 @@ class sonarr_meta:
     baseurl = "/sonarr"
     systemd = "sonarr@"
 
+class sonarrv3_meta:
+    name = "sonarrv3"
+    pretty_name = "Sonarr Alpha"
+    process = "sonarrv3"
+    baseurl = "/sonarrv3"
+    systemd = "sonarrv3@"
+
 class subsonic_meta:
     name = "subsonic"
     pretty_name = "Subsonic"
