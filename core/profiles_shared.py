@@ -159,6 +159,14 @@ class sonarr_meta:
     process = "NzbDrone"
     multiuser = True
 
+class sonarrv3_meta:
+    name = "sonarrv3"
+    pretty_name = "Sonarr Alpha"
+    baseurl = "/sonarrv3"
+    systemd = "sonarrv3@"
+    process = "sonarrv3"
+    multiuser = True    
+
 class wireguard_meta:
     name = "wireguard"
     pretty_name = "Wireguard"
