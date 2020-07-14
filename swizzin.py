@@ -3,6 +3,7 @@ import flask
 from core.htpasswd import HtPasswdAuth
 from flask_socketio import SocketIO, emit
 from threading import Thread, Lock
+from packaging import version
 import os
 import core.config
 import requests
@@ -236,28 +237,48 @@ def loadavg(user):
 @app.route('/stats/vnstat')
 @htpasswd.required
 def vnstat(user):
-    stats = []
+    #stats = []
     interface = get_default_interface()
-    hour = int(time.strftime("%H"))
-    lasthour = hour - 1
-    if lasthour == -1:
-        lasthour = 23
-    statsh = vnstat_parse(interface, "h", "hours", hour)
-    statslh = vnstat_parse(interface, "h", "hours", lasthour)
-    statsd = vnstat_parse(interface, "d", "days", 0)
-    statsm = vnstat_parse(interface, "m", "months", 0)
-    statsa = vnstat_parse(interface, "h", "total")
+    vnstat_info = vnstat_data(interface, "h")
+    vnstat_jsonversion = vnstat_info["jsonversion"]
+    if vnstat_jsonversion == "1":
+        qh = "hours"
+        qd = "days"
+        qm = "months"
+        qt = "tops"
+        thisday = 0
+        thismonth = 0
+        hour = int(time.strftime("%H"))
+        lasthour = hour - 1
+        if lasthour == -1:
+            lasthour = 23
+        read_unit = GetHumanReadableKB
+    elif vnstat_jsonversion == "2":
+        qh = "hour"
+        qd = "day"
+        qm = "month"
+        qt = "top"
+        thisday = vnstat_data(interface, "d")['interfaces'][0]['traffic']['day'][-1]["id"]
+        thismonth = vnstat_data(interface, "m")['interfaces'][0]['traffic']['month'][-1]["id"]
+        hour = vnstat_info['interfaces'][0]['traffic']['hour'][-1]["id"]
+        lasthour = vnstat_info['interfaces'][0]['traffic']['hour'][-2]["id"]
+        read_unit = GetHumanReadableB
+    statsh = vnstat_parse(interface, "h", qh, read_unit, hour)
+    statslh = vnstat_parse(interface, "h", qh, read_unit, lasthour)
+    statsd = vnstat_parse(interface, "d", qd, read_unit, thisday)
+    statsm = vnstat_parse(interface, "m", qm, read_unit, thismonth)
+    statsa = vnstat_parse(interface, "h", "total", read_unit)
     #statsa = vnstat_parse(interface, "m", "total", 0)
-    tops = vnstat_data(interface, "t")['interfaces'][0]['traffic']['tops']
+    tops = vnstat_data(interface, "t")['interfaces'][0]['traffic'][qt]
     top = []
-    for t in tops:
+    for t in tops[:10]:
         date = t['date']
         year = date['year']
         month = calendar.month_abbr[date['month']]
         day = date['day']
         date = "{month} {day}, {year}".format(year=year, month=month, day=day)
-        rx = GetHumanReadableKB(t['rx'])
-        tx = GetHumanReadableKB(t['tx'])
+        rx = read_unit(t['rx'])
+        tx =read_unit(t['tx'])
         top.append({"date": date, "rx": rx, "tx": tx})
     columns = {"date", "rx", "tx"}
     #stats = []
