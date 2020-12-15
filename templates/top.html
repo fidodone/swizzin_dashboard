@@ -2,9 +2,9 @@
 <table class="table table-condensed table-hover table-dark table-borderless">
     <thead class="table-active">
         <tr>
-            <th scope="col">Period</th>
-            <th scope="col" class="text-info text-center">Down</th>
-            <th scope="col" class="text-success text-center">Up</th>
+            <th scope="col">Período</th>
+            <th scope="col" class="text-info text-center">Download</th>
+            <th scope="col" class="text-success text-center">Upload</th>
 			{% if config.NETWORK_TOTALS == True %}
 			<th scope="col" class="text-warning text-center">Total</th>
 			{% endif %}
@@ -12,7 +12,7 @@
     </thead>
     <tbody>
         <tr>
-            <td>This Hour</td>
+            <td>Atualmente</td>
             <td class="text-info text-right text-center">{{ hour['rx'] }}</td>
             <td class="text-success text-center">{{ hour['tx'] }}</td>
 			{% if config.NETWORK_TOTALS == True %}
@@ -20,7 +20,7 @@
 			{% endif %}
         </tr>
         <tr>
-            <td>Last Hour</td>
+            <td>Hora</td>
             <td class="text-info text-center">{{ lasthour['rx'] }}</td>
             <td class="text-success text-center">{{ lasthour['tx'] }}</td>
 			{% if config.NETWORK_TOTALS == True %}
@@ -28,7 +28,7 @@
 			{% endif %}
         </tr>
         <tr>
-            <td>This Day</td>
+            <td>Hoje</td>
             <td class="text-info text-center">{{ day['rx'] }}</td>
             <td class="text-success text-center">{{ day['tx'] }}</td>
 			{% if config.NETWORK_TOTALS == True %}
@@ -36,7 +36,7 @@
 			{% endif %}
         </tr>
         <tr>
-            <td>This Month</td>
+            <td>Mês</td>
             <td class="text-info text-center">{{ month['rx'] }}</td>
             <td class="text-success text-center">{{ month['tx'] }}</td>
 			{% if config.NETWORK_TOTALS == True %}
@@ -44,7 +44,7 @@
 			{% endif %}
         </tr>
         <tr>
-            <td>All Time</td>
+            <td>Total</td>
             <td class="text-info text-center">{{ alltime['rx'] }}</td>
             <td class="text-success text-center">{{ alltime['tx'] }}</td>
 			{% if config.NETWORK_TOTALS == True %}
@@ -57,9 +57,9 @@
 <table class="table table-condensed table-hover table-dark table-borderless">
     <thead class="table-active">
         <tr>
-            <th scope="col">Date</th>
-            <th scope="col" class="text-info text-center">Down</th>
-            <th scope="col" class="text-success text-center">Up</th>
+            <th scope="col">Data</th>
+            <th scope="col" class="text-info text-center">Download</th>
+            <th scope="col" class="text-success text-center">Upload</th>
 			{% if config.NETWORK_TOTALS == True %}
 			<th scope="col" class="text-warning text-center">Total</th>
 			{% endif %}

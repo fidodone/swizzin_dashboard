@@ -174,7 +174,7 @@ def index(user):
         quota = True
     else:
         quota = False
-    return flask.render_template('index.html', title='{user} - swizzin dashboard'.format(user=user), user=user, pages=pages, quota=quota, mounts=mounts, async_mode=socketio.async_mode)
+    return flask.render_template('index.html', title='{user} - Painel Nixon'.format(user=user), user=user, pages=pages, quota=quota, mounts=mounts, async_mode=socketio.async_mode)
 
 @socketio.on('connect', namespace='/websocket')
 def socket_connect():
@@ -364,7 +364,7 @@ def network_quota(user):
 
 @app.route('/login')
 def login():
-    return flask.render_template('login.html', title='swizzin login')
+    return flask.render_template('login.html', title='NixonCloud Login')
 
 @app.route('/login/auth')
 @htpasswd.required

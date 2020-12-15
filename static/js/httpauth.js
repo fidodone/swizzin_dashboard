@@ -35,9 +35,9 @@ http.send("");
     if (http.status == 200) {
         document.location = url;
     } else if (http.status == 429) {
-        alert("You have been rate limited! Please try again in 1 minute.");
+        alert("Limite de tentativas atingido! Tente novamente em 1 minuto.");
     } else {
-        alert("Incorrect username and/or password!");
+        alert("Usuário e/ou Senha incorreta!");
     }
 return false;
 }
