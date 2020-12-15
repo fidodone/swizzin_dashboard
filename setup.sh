@@ -5,7 +5,7 @@ master=$(cut -d: -f1 < /root/.master.info)
 apt-get -y -q install python3-venv git
 mkdir -p /opt/swizzin/
 python3 -m venv /opt/swizzin/venv
-git clone https://github.com/fidodone/swizzin_dashboard.git /opt/swizzin/swizzin
+git clone https://github.com/liaralabs/swizzin_dashboard.git /opt/swizzin/swizzin
 /opt/swizzin/venv/bin/pip install -r /opt/swizzin/swizzin/requirements.txt
 useradd -r swizzin
 chown -R swizzin: /opt/swizzin

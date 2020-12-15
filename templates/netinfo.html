@@ -1,43 +1,49 @@
 <div class="card border-dark mt-3">
-  <div class="card-header">Informações de Rede</div>
-  <div class="card-body">
-    {% if config.SHAREDSERVER == True %}
-      <div class="row">
-          <div class="col">
-            <h5 class="text-center">Usado</h5>
-            <p class="text-center"><span id="netused"></span></p>
+    <div class="card-header">Network Info</div>
+    <div class="card-body">
+      {% if config.SHAREDSERVER == True %}
+        <div class="row">
+            <div class="col">
+              <h5 class="text-center">Used</h5>
+              <p class="text-center"><span id="netused"></span></p>
+            </div>
+            <div class="col">
+              <h5 class="text-center">Free</h5>
+              <p class="text-center"><span id="netfree"></span></p>
+            </div>
+            <div class="col">
+              <h5 class="text-center">Total</h5>
+              <p class="text-center"><span id="nettotal"></span></p>
+            </div>
           </div>
-          <div class="col">
-            <h5 class="text-center">Livre</h5>
-            <p class="text-center"><span id="netfree"></span></p>
-          </div>
-          <div class="col">
-            <h5 class="text-center">Total</h5>
-            <p class="text-center"><span id="nettotal"></span></p>
-          </div>
+        <div class="progress">
+          <div id="netprogress" class="progress-bar bg-warning" role="progressbar" style="" aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
-      <div class="progress">
-        <div id="netprogress" class="progress-bar bg-warning" role="progressbar" style="" aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
-      </div>
-      <p class="text-center">Você usou <span id="netpercent"></span>% da sua banda</p>
-    {% endif %}
+        <p class="text-center">You have used <span id="netpercent"></span>% of your bandwidth</p>
+      {% endif %}
 
 {% if config.ADMIN_USER == user %}
 <table class="table table-hover table-condensed table-dark table-borderless">
-  <thead class="table-active">
-      <tr>
-          <th scope="col">Interface</th>
-          <th scope="col" class="text-info text-right">Download</th>
-          <th scope="col" class="text-success">Upload</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td><div id="current_interface">--</div></td>
-          <td class="text-info"><div id="current_rx" class="text-right">--</div></td>
-          <td class="text-success"><div id="current_tx">--</div></td>
-      </tr>
-  </tbody>
+    <thead class="table-active">
+        <tr>
+            <th scope="col">Interface</th>
+            <th scope="col" class="text-info text-center">Down</th>
+            <th scope="col" class="text-success text-center">Up</th>
+			{% if config.NETWORK_TOTALS == True %}
+			<th scope="col" class="text-warning text-center">Total</th>
+			{% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><div id="current_interface">--</div></td>
+            <td class="text-info"><div id="current_rx" class="text-center">--</div></td>
+            <td class="text-success"><div id="current_tx" class="text-center">--</div></td>
+			{% if config.NETWORK_TOTALS == True %}
+			<td class="text-warning"><div id="current_total" class="text-center">--</div></td>
+			{% endif %}
+        </tr>
+    </tbody>
 </table>
 <div id="top10"></div>
 {% endif %}

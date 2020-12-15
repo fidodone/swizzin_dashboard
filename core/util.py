@@ -103,7 +103,11 @@ def generate_page_list(user):
             systemd = profile.systemd
         except:
             systemd = profile.name
-        pages.append({"name": profile.name, "pretty_name": profile.pretty_name, "url": url, "systemd": systemd})
+        try:
+            brand = profile.img
+        except:
+            brand = profile.name
+        pages.append({"name": profile.name, "pretty_name": profile.pretty_name, "url": url, "systemd": systemd, "img": brand})
     return pages
 
 def apps_status(username):
@@ -209,10 +213,12 @@ def vnstat_parse(interface, mode, query, read_unit, position=False):
                 data = {}
                 data['rx'] = read_unit(p['rx'])
                 data['tx'] = read_unit(p['tx'])
+                data['total'] = read_unit(p['tx'] + p['rx'])
                 result = data
                 break
     else:
         result = vnstat_data(interface, mode)['interfaces'][0]['traffic'][query]
+        result['total'] = read_unit(result['rx'] + result['tx'])
         result['rx'] = read_unit(result['rx'])
         result['tx'] = read_unit(result['tx'])
     return result

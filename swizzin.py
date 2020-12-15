@@ -27,6 +27,29 @@ app.config.from_pyfile('swizzin.cfg', silent=True)
 admin_user = app.config['ADMIN_USER']
 htpasswd = HtPasswdAuth(app)
 
+#Config rate limiting
+def check_authorization():
+    if flask.request.authorization:
+        try:
+            authreq = flask.request.authorization.username 
+            return True
+        except:
+            return False
+    else:
+        return False
+
+
+if app.config['RATELIMIT_ENABLED'] == True:
+    from flask_limiter import Limiter
+    from flask_limiter.util import get_remote_address
+    limiter = Limiter(
+        app,
+        key_func=get_remote_address,
+        default_limits=[app.config['RATELIMIT_DEFAULT']],
+        default_limits_exempt_when=check_authorization,
+        default_limits_per_method=True
+    )
+
 from core.util import *
 
 #Prepare the background threads
@@ -43,10 +66,11 @@ def current_speed(app):
     with app.app_context():
         #print("Starting current speed for", interface)
         interface = get_default_interface()
-        (tx_prev, rx_prev) = (0, 0)
+        (tx_prev, rx_prev, total_prev) = (0, 0, 0)
         while(True):
             tx = get_nic_bytes('tx', interface)
             rx = get_nic_bytes('rx', interface)
+            total = tx + rx
             if tx_prev > 0:
                 tx_speed = tx - tx_prev
                 #print('TX: ', tx_speed, 'bps')
@@ -55,10 +79,15 @@ def current_speed(app):
                 rx_speed = rx - rx_prev
                 #print('RX: ', rx_speed, 'bps')
                 rx_speed = str(GetHumanReadableB(rx_speed)) + "/s"
-                emit('speed', {'interface': interface, 'tx': tx_speed, 'rx': rx_speed}, namespace='/websocket', broadcast=True)
+            if total_prev > 0:
+                total_speed = total - total_prev
+                #print("TOTAL: ', total_speed, 'bps')
+                total_speed = str(GetHumanReadableB(total_speed)) + "/s"
+                emit('speed', {'interface': interface, 'tx': tx_speed, 'rx': rx_speed, 'total': total_speed}, namespace='/websocket', broadcast=True)
             time.sleep(1)
             tx_prev = tx
             rx_prev = rx
+            total_prev = total
 
 def io_wait(app):
     """ Thread for iowait emission """
@@ -145,7 +174,7 @@ def index(user):
         quota = True
     else:
         quota = False
-    return flask.render_template('index.html', title='{user} - Painel Nixon'.format(user=user), user=user, pages=pages, quota=quota, mounts=mounts, async_mode=socketio.async_mode)
+    return flask.render_template('index.html', title='{user} - swizzin dashboard'.format(user=user), user=user, pages=pages, quota=quota, mounts=mounts, async_mode=socketio.async_mode)
 
 @socketio.on('connect', namespace='/websocket')
 def socket_connect():
@@ -282,8 +311,9 @@ def vnstat(user):
         date = "{month} {day}, {year}".format(year=year, month=month, day=day)
         rx = read_unit(t['rx'])
         tx =read_unit(t['tx'])
-        top.append({"date": date, "rx": rx, "tx": tx})
-    columns = {"date", "rx", "tx"}
+        total = read_unit(t['tx'] + t['rx'])
+        top.append({"date": date, "rx": rx, "tx": tx, "total": total})
+    columns = {"date", "rx", "tx", "total"}
     #stats = []
     #stats.extend({"statsh": statsh, "statslh": statslh, "statsd": statsd, "statsm": statsm, "statsa": statsa, "top": top})
     #print(stats)
@@ -334,7 +364,7 @@ def network_quota(user):
 
 @app.route('/login')
 def login():
-    return flask.render_template('login.html', title='NixonCloud Login')
+    return flask.render_template('login.html', title='swizzin login')
 
 @app.route('/login/auth')
 @htpasswd.required
