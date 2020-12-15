@@ -1,5 +1,5 @@
 <div class="card border-dark mt-3">
-    <div class="card-header">Informações de Rede</div>
+    <div class="card-header">Rede</div>
     <div class="card-body">
       {% if config.SHAREDSERVER == True %}
         <div class="row">
@@ -27,8 +27,8 @@
     <thead class="table-active">
         <tr>
             <th scope="col">Interface</th>
-            <th scope="col" class="text-info text-center">Down</th>
-            <th scope="col" class="text-success text-center">Up</th>
+            <th scope="col" class="text-info text-center">Download</th>
+            <th scope="col" class="text-success text-center">Upload</th>
 			{% if config.NETWORK_TOTALS == True %}
 			<th scope="col" class="text-warning text-center">Total</th>
 			{% endif %}
